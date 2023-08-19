@@ -21,20 +21,32 @@ def exponent(num):
         num = f'{num:.{size}f}'
     return num
 
+#function = '3*x**2+4*x-10'
+#function = 'sin(x)'
 function = 'cos(x)'
 Xo = 0
+
 n = 15
 
-f_Xo = function.replace('x', str(Xo))
+# Pn(x) = f(Xo) + f'(Xo) / 1! * (X - Xo) + f''(Xo) / 2! * (X - Xo)**2
 
-tangent = math.cos(Xo) + eval(f"{sympy.diff(f_Xo)} * (x - {Xo})")
-derivedFunctions = []
-
+f_Xo = eval(math_func(str(function).replace('x', str(Xo))))
+print(f"f_Xo: {f_Xo}")
 prevDiff = str(sympy.diff(function))
-for i in range(2, n):
+prevDiff_Xo = prevDiff.replace('x', str(Xo))
+print(f"f'(Xo): {prevDiff_Xo}")
+prevDiff_Xo = eval(math_func(prevDiff_Xo))
+print(f"f'(Xo): {prevDiff_Xo}")
+tangent = f_Xo + prevDiff_Xo * (x - Xo)
+print(f"tangent: {tangent}")
+
+derivedFunctions = []
+for i in range(2, n + 1):
     nFac = factorial(i)
     prevDiff_Xo = str(sympy.diff(prevDiff)).replace('x', str(Xo))
     prevDiff = str(sympy.diff(prevDiff))
+
+    #eval(f"{exponent(eval(f'{math_func(prevDiff_Xo)}/{nFac}'))}*(x - {str(Xo)})**{i}")
 
     derivedFunctions.append(f"{exponent(eval(f'{math_func(prevDiff_Xo)}/{nFac}'))}*(x - {str(Xo)})**{i}")
 
@@ -67,7 +79,5 @@ for x in range(-80, 80, 1):
 
 plt.plot(xAxisTaylor, yAxisTaylor, color='green') # linestyle=(0, (5, 5)), linewidth=2
 plt.show()
-
-
 
 
